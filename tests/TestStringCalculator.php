@@ -69,4 +69,20 @@ class TestStringCalculator extends TestCase
 
         $this->assertEquals('Number expected but EOF found.', $stringCalculator->add('1,3,'));
     }
+
+    public function test_add_should_return_sum_when_there_is_defined_separator()
+    {
+        $stringCalculator = new StringCalculator();
+
+        $this->assertEquals(3, $stringCalculator->add('//;\n1;2'));
+        $this->assertEquals(6, $stringCalculator->add('//|\n1|2|3'));
+        $this->assertEquals(5, $stringCalculator->add('//sep\n2sep3'));
+    }
+
+    public function test_add_should_return_error_when_defined_separator_invalid()
+    {
+        $stringCalculator = new StringCalculator();
+
+        $this->assertEquals('\'|\' expected but \',\' found at position 3.', $stringCalculator->add('//|\n1|2,3'));
+    }
 }

@@ -4,7 +4,7 @@ namespace App;
 
 class StringCalculator
 {
-    public function __construct()
+    public function __construct(private string $separator = ',')
     {
     }
 
@@ -18,12 +18,21 @@ class StringCalculator
             return sprintf('Number expected but \'\n\' found at position %d.', strpos($numbersString, ',\n') + 1);
         }
 
-        if (substr($numbersString, -1)) {
+        if (str_ends_with($numbersString, ',')) {
             return 'Number expected but EOF found.';
         }
 
-        $numbersString = str_replace('\n', ',', $numbersString);
+        if (preg_match('/^\/\/(.*)\\\n/', $numbersString, $matches)) {
+            $this->separator = $matches[1];
+            $numbersString = str_replace($matches[0], '', $numbersString);
+        }
 
-        return array_sum(explode(',', $numbersString));
+        $numbersString = str_replace('\n', $this->separator, $numbersString);
+
+        if (preg_match('/([^0-9\.' . $this->separator . '])/', $numbersString, $matches)){
+            return sprintf('\'%s\' expected but \'%s\' found at position %d.', $this->separator, $matches[0], strpos($numbersString, $matches[0]));
+        }
+
+        return array_sum(explode($this->separator, $numbersString));
     }
 }
