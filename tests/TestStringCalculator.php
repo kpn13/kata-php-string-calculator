@@ -62,4 +62,11 @@ class TestStringCalculator extends TestCase
 
         $this->assertEquals('Number expected but \'\n\' found at position 6.', $stringCalculator->add('175.2,\n35'));
     }
+
+    public function test_add_should_return_error_when_there_is_comma_as_last_char()
+    {
+        $stringCalculator = new StringCalculator();
+
+        $this->assertEquals('Number expected but EOF found.', $stringCalculator->add('1,3,'));
+    }
 }

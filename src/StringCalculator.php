@@ -18,6 +18,10 @@ class StringCalculator
             return sprintf('Number expected but \'\n\' found at position %d.', strpos($numbersString, ',\n') + 1);
         }
 
+        if (substr($numbersString, -1)) {
+            return 'Number expected but EOF found.';
+        }
+
         $numbersString = str_replace('\n', ',', $numbersString);
 
         return array_sum(explode(',', $numbersString));
