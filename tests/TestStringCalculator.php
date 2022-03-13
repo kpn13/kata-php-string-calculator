@@ -48,4 +48,18 @@ class TestStringCalculator extends TestCase
 
         $this->assertEquals('27.1', $stringCalculator->add('1,2,1.1,23'));
     }
+
+    public function test_add_should_return_sum_when_there_is_newline()
+    {
+        $stringCalculator = new StringCalculator();
+
+        $this->assertEquals('27.1', $stringCalculator->add('1,2\n1.1,23'));
+    }
+
+    public function test_add_should_return_error_when_there_is_comma_before_newline()
+    {
+        $stringCalculator = new StringCalculator();
+
+        $this->assertEquals('Number expected but \'\n\' found at position 6.', $stringCalculator->add('175.2,\n35'));
+    }
 }

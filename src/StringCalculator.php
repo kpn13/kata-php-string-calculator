@@ -14,6 +14,12 @@ class StringCalculator
             return '0';
         }
 
+        if (str_contains($numbersString, ',\n')) {
+            return sprintf('Number expected but \'\n\' found at position %d.', strpos($numbersString, ',\n') + 1);
+        }
+
+        $numbersString = str_replace('\n', ',', $numbersString);
+
         return array_sum(explode(',', $numbersString));
     }
 }
